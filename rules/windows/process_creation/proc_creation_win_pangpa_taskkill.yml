@@ -1,0 +1,22 @@
+title: Taskkill run against PanGPA.exe
+id: 75994604-de85-4d42-b955-9a85880a48ee
+status: experimental
+description: A process has used taskkill to forcibly terminate the PanGPA.exe Global Protect Agent
+references:
+    - https://github.com/t3hbb/PanGP_Extractor/blob/0b74d6c8ff836be8b28886983fd095b0a35dd2dc/PanGPA_Extractor/PanGPA_Extractor.cpp#L282
+tags:
+    - attack.execution
+    - attack.t1489
+author: Seth Hanford (LinkedIn)
+date: 2024-11-19
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - ParentCommandLine|contains: 'taskkill /IM PanGPA.exe /F '
+        - CommandLine|contains: 'taskkill /IM PanGPA.exe /F '
+    condition: selection
+falsepositives:
+    - Benign task kills of the PanGPA process, e.g. for troubleshooting
+level: low

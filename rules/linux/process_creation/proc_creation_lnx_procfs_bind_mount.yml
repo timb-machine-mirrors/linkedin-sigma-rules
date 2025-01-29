@@ -1,0 +1,35 @@
+title: Potential Process Hiding via Linux procfs Bind Mounts
+id: d1a5cd71-870e-458c-90f3-34f68a6a7c13
+status: experimental
+description: |
+    Detects suspicious use of bind mounts in the /proc filesystem.
+    This may indicate an attempt to conceal active processes for malicious purposes.
+references:
+    - https://dfir.ch/posts/slash-proc/
+    - https://asec.ahnlab.com/en/51908/
+    - https://gist.github.com/timb-machine/602d1a4dace4899babc1b6b5345d24b2
+    - https://righteousit.com/2024/07/24/hiding-linux-processes-with-bind-mounts/
+tags:
+    - attack.defense-evasion
+    - attack.t1036.009
+    - attack.t1564.001
+author: Seth Hanford (LinkedIn)
+date: 2024-10-02
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith: '/mount'
+        CommandLine|re: ' /proc/[0-9]+'
+    bind_options:
+        - CommandLine|contains:
+            - '-B '
+            - '--bind '
+        - CommandLine|contains|all: 
+            - '-o'
+            - 'bind'
+    condition: selection and bind_options
+    falsepositives:
+        - Linux containers may use bind mounts, possibly with the --no-canonicalize flag, during normal operations
+level: medium

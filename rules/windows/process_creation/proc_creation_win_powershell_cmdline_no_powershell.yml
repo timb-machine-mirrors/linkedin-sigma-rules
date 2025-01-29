@@ -1,0 +1,32 @@
+title: PowerShell Executed with Potential Obfuscation of powershell/pwsh in Command Line
+id: acd82557-65bf-483e-8152-270376bfb0d6
+status: experimental
+description: Detects when PowerShell is executed but with "powershell" or "pwsh" obfuscated in the command line
+references:
+    - https://www.deepinstinct.com/blog/ducktail-threat-operation-re-emerges-with-new-lnk-powershell-and-other-custom-tactics-to-avoid-detection
+    - https://github.com/executemalware/Malware-IOCs/blob/7c614ac2e26a4110d833683dd88307a9dddeee88/2022-09-29%20Remcos%20RAT%20IOCs
+tags:
+    - attack.defense-evasion
+    - attack.t1027.010
+    - attack.execution
+    - attack.t1059.001
+author: Eddie Allan (LinkedIn)
+date: 2024-10-02
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_powershell:
+        Image|endswith: 'powershell.exe'
+        CommandLine|re: 'p[^a-z]*o[^a-z]*w[^a-z]*e[^a-z]*r[^a-z]*s[^a-z]*h[^a-z]*e[^a-z]*l[^a-z]*l'
+    selection_pwsh:
+        Image|endswith: 'pwsh.exe'
+        CommandLine|re: 'p[^a-z]*w[^a-z]*s[^a-z]*h[^a-z]*'
+    filter_unobfuscated:
+        CommandLine|contains:
+            - 'powershell'
+            - 'pwsh'
+    condition: 1 of selection* and not filter_unobfuscated
+    falsepositives:
+        - Unknown
+level: medium

@@ -1,0 +1,54 @@
+title: DNS Query to Tunnel Service
+id: a61fa180-973a-48ca-b358-860e36638d35
+status: experimental
+description: Detects DNS queries to known tunnel services, which could be used for data exfiltration or command and control.
+references:
+    - https://lottunnels.github.io/
+author: Eddie Allan (LinkedIn)
+date: 2025-01-27
+tags:
+    - attack.exfiltration
+    - attack.t1048
+    - attack.t1567
+    - attack.command-and-control
+    - attack.t1572
+logsource:
+    category: dns
+detection:
+    selection:
+        query|contains:
+            - '.btunnel.co.in'
+            - '.btunnel.in'
+            - '.burrow.io'
+            - '.burrow.link'
+            - 'dataplicity.com'
+            - '.dataplicity.io'
+            - '.devtunnels.ms'
+            - '.loca.lt'
+            - '.localtunnel.me'
+            - 'localxpose.io'
+            - 'loophole.eu.auth0.com'
+            - '.loophole.site'
+            - 'pagekite.net'
+            - '.pagekite.me'
+            - '.pinggy.io'
+            - '.pinggy.link'
+            - '.pitunnel.com'
+            - '.serveo.net'
+            - '.sharedwithexpose.com'
+            - '.shellhub.io'
+            - '.ssi.sh'
+            - '.staqlab-tunnel.com'
+            - '.telebit.cloud'
+            - '.telebit.fun'
+            - '.telebit.io'
+            - '.tmate.io'
+            - '.trycloudflare.com'
+            - 'tunnel.staqlab.com'
+            - 'tunnels.api.visualstudio.com'
+            - '.tunnelto.dev'
+            - '.tuns.sh'
+    condition: selection
+falsepositives:
+    - Approved/legimate use of tunnel services
+level: low

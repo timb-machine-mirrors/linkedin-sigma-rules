@@ -1,0 +1,23 @@
+title: PanGP_Extractor hack tool targeting PanGPA.exe
+id: c69a49e5-60e4-4adc-9136-b0d5e890584e
+status: experimental
+description: A process has used PanGP_Extractor to attempt plaintext credential extraction from PanGPA.exe Global Protect Agent
+references:
+    - https://shells.systems/extracting-plaintext-credentials-from-palo-alto-global-protect/
+    - https://github.com/t3hbb/PanGP_Extractor/tree/main
+tags:
+    - attack.execution
+    - attack.t1212
+author: Seth Hanford (LinkedIn)
+date: 2024-11-19
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - CommandLine|contains: 'PanGPA.exe'
+    selection_parent:
+        - ParentCommandLine|contains: 'PanGPA_Extractor'
+        - ParentImage|endswith: '\pangpa_extractor.exe'
+    condition: all of selection*
+level: high
