@@ -29,6 +29,8 @@ detection:
             - 'localxpose.io'
             - 'loophole.eu.auth0.com'
             - '.loophole.site'
+            - 'ngrok.com'
+            - 'ngrok.io'
             - 'pagekite.net'
             - '.pagekite.me'
             - '.pinggy.io'
